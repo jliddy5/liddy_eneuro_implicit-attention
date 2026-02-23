@@ -2,7 +2,7 @@
 clear; clc;
 
 % Load data
-load(fullfile("Data","Results.mat"));
+load(fullfile("data","results.mat"));
 
 % Select cycle indices
 cycle_idx = 1:51;
@@ -31,4 +31,4 @@ tad = rt + mt;
 % Export data for statistical analyses
 T = table(id, group, cycle, ha, rt, mt, tad,...
           'VariableNames',{'id', 'group', 'cycle', 'ha', 'rt', 'mt', 'tad'});
-writetable(T, fullfile(cd, "Statistics", "Data", "Data_Reaching.xlsx"));
+writetable(T, fullfile(cd, "statistics", "data", "data_reaching.xlsx"));

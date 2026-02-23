@@ -1,12 +1,18 @@
 % Clear variables and command window.
 clear; clc; close all;
 
+% Set random seed for reproducibility.
+% NOTE: The original seed was not saved. Re-running this script outputs
+% results_model.mat with similar but not identical values due to random
+% initialization. The published estimates are in results_model_published.mat.
+rng(2025);
+
 % Add utility functions to path
-addpath("Utils");
+addpath("utils");
 
 %% === Prepare data ======================================================%
 % Load data
-load(fullfile("Data","Results.mat"));
+load(fullfile("data","results.mat"));
 
 % Rotaton, error clamp, and set break schedules.
 r = [zeros(10,1); nan(40,1); nan(1,1); zeros(20,1); nan(20,1)];
@@ -76,7 +82,7 @@ for i = 1:size(DataTable,1)
     [~, bestIdx] = min(mse_est);
     DataTable.Parameters{i} = params_est(:,bestIdx);
     DataTable.A(i) = DataTable.Parameters{i}(1);
-    DataTable.B(i) = DataTable.Parameters{i}(2);
+    DataTable.b(i) = DataTable.Parameters{i}(2);
     DataTable.d(i) = DataTable.Parameters{i}(4);
 
     % Simulate noise-free data based on fitted parameters.
@@ -97,4 +103,4 @@ for i = 1:size(DataTable,1)
 end
 
 % Save results.
-save(fullfile("Data","Results_Model.mat"),"DataTable");
+save(fullfile("data","results_model.mat"),"DataTable");

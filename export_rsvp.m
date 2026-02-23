@@ -2,7 +2,7 @@
 clear; clc;
 
 % Load data
-load(fullfile("Data","Results.mat"));
+load(fullfile("data","results.mat"));
 
 % Select cycle indices:
 % baseline = cycles  6-10
@@ -33,4 +33,4 @@ end
 % Export data for statistical analyses
 T = table(id, group, phase, accuracy, ...
           'VariableNames',{'id', 'group', 'phase', 'accuracy'});
-writetable(T, fullfile(cd, "Statistics", "Data", "Data_RSVP.xlsx"));
+writetable(T, fullfile(cd, "statistics", "data", "data_rsvp.xlsx"));
