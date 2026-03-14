@@ -12,7 +12,7 @@
 %   Both must be on the MATLAB path (e.g., run: addpath("utils"))
 %
 % Data:
-%   - statistics/data/data_reaching.xlsx (raw cycle-level hand angle)
+%   - data/results.mat (raw cycle-level hand angle)
 %   - statistics/results/posterior_ha_earlylearning.xlsx
 %   - statistics/results/posterior_ha_latelearning.xlsx
 %
@@ -26,41 +26,14 @@
 clear; clc;
 addpath("utils");
 
-% Load raw reaching data
-df = readtable(fullfile("statistics","data","data_reaching.xlsx"));
-df.group = categorical(df.group, ["ST" "DT" "DTF"]);
-
-% Compute per-participant cycle means for panel a (cycles 1-51, ST and DT only)
-df_ab = df(df.group ~= "DTF", :);
-groups = ["ST" "DT"];
-cycleMax = 51;
-
-% Build participant x cycle matrices
-ST_ids = unique(df_ab.id(df_ab.group == "ST"));
-DT_ids = unique(df_ab.id(df_ab.group == "DT"));
-
-ST = NaN(length(ST_ids), cycleMax);
-for i = 1:length(ST_ids)
-    rows = df_ab.id == ST_ids(i);
-    cyc  = df_ab.cycle(rows);
-    ha   = df_ab.ha(rows);
-    ST(i, cyc) = ha;
-end
-
-DT = NaN(length(DT_ids), cycleMax);
-for i = 1:length(DT_ids)
-    rows = df_ab.id == DT_ids(i);
-    cyc  = df_ab.cycle(rows);
-    ha   = df_ab.ha(rows);
-    DT(i, cyc) = ha;
-end
+% Load data
+load(fullfile("data","results.mat"));
+ST = reshape(cell2mat(DataTable.HA_Cycle(DataTable.Group == "ST",:)),91,[])';
+DT = reshape(cell2mat(DataTable.HA_Cycle(DataTable.Group == "DT",:)),91,[])';
 
 % Load participant-level window means (from ha_window_analysis.R output)
 early = readtable(fullfile("statistics","results","posterior_ha_earlylearning.xlsx"), 'Sheet', "data");
 late  = readtable(fullfile("statistics","results","posterior_ha_latelearning.xlsx"),  'Sheet', "data");
-
-early.group = categorical(early.group, ["ST" "DT" "DTF"]);
-late.group  = categorical(late.group,  ["ST" "DT" "DTF"]);
 
 % === Figure 2 ================================================================%
 f = figure("Color","w","Units","inches","OuterPosition",[6 2 4.57 5.95]);
