@@ -57,7 +57,7 @@ model_seed <- 652398
 
 # Priors
 priors <- c(
-  prior(normal(0.7, 0.5), class = "b"), # Each phase: ≈ .55-.78 on prob scale
+  prior(normal(0.7, 0.5), class = "b"), # Each phase ≈ .55-.78 on prob scale
   prior(exponential(2), class = "sd")   # Random effects ≈ ±.15–.20 on prob scale
 )
 
