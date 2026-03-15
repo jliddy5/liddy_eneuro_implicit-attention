@@ -57,7 +57,7 @@ annotation('textbox', [0.01 0.87 0.2 0.1], 'String', 'a', 'EdgeColor', 'none', '
 
 % Posterior ------------------------------------------------------------- %
 % Load posterior samples.
-A = readtable(fullfile("statistics", "results", "posterior_model_learningparameters.xlsx"), 'Sheet', "Retention");
+A = readtable(fullfile("statistics", "results", "posterior_model_parameters.xlsx"), 'Sheet', "Retention");
 
 subplot(3,2,2);
 hold on;
@@ -140,7 +140,7 @@ annotation('textbox', [0.01 0.58 0.2 0.1], 'String', 'b', 'EdgeColor', 'none', '
 
 % Posterior ------------------------------------------------------------- %
 % Load posterior samples.
-B = readtable(fullfile("statistics", "results", "posterior_model_learningparameters.xlsx"), 'Sheet', "ErrorSensitivity");
+B = readtable(fullfile("statistics", "results", "posterior_model_parameters.xlsx"), 'Sheet', "ErrorSensitivity");
 
 subplot(3,2,4);
 hold on;

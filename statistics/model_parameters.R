@@ -179,7 +179,23 @@ wb <- wb_add_data(wb, sheet = "ErrorSensitivity", x = data.frame(
   Mean_DT  = mu_b$DT,
   Mean_DTF = mu_b$DTF
 ))
-wb_save(wb, here("results", "posterior_model_learningparameters.xlsx"))
+wb_save(wb, here("results", "posterior_model_parameters.xlsx"))
+
+# Export logit-scale group summary (used by degeneracy test) ----------------- #
+logit_params <- map_dfr(1:3, function(g) {
+  tibble(
+    Group   = c("ST", "DT", "DTF")[g],
+    Mu_A    = median(posterior_samples$mu[, g, 1]),
+    Sigma_A = median(posterior_samples$sigma[, g, 1]),
+    Mu_b    = median(posterior_samples$mu[, g, 2]),
+    Sigma_b = median(posterior_samples$sigma[, g, 2]),
+    Nu      = median(posterior_samples$nu[, g])
+  )
+})
+wb_logit <- wb_workbook()
+wb_logit <- wb_add_worksheet(wb_logit, "LogitParams")
+wb_logit <- wb_add_data(wb_logit, sheet = "LogitParams", x = logit_params)
+wb_save(wb_logit, here("results", "posterior_model_logitparameters.xlsx"))
 
 # Figure 7 ------------------------------------------------------------------- #
 group_labels <- c("ST", "DT", "DT[F]")
