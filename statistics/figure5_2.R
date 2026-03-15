@@ -144,6 +144,6 @@ p_combined <- (p1 + p2) +
 p_combined
 
 ggsave(
-  filename = here("..", "figures", "Figure5_2.tif"),
+  filename = here("..", "figures", "figure5_2.tif"),
   plot = p_combined, width = 6.5, height = 3.25, units = "in", dpi = 600
 )
