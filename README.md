@@ -11,30 +11,30 @@ Data and code: [10.5281/zenodo.18510924](https://doi.org/10.5281/zenodo.18510924
 
 ```
 .
-├── data/                          # MATLAB data files
-│   ├── results.mat                # Raw reaching/RSVP data
-│   ├── results_model_published.mat  # Model fits (used for figures and degeneracy test)
-│   └── sim_degeneracy.mat         # Simulation results for model degeneracy test
+├── data/                            # MATLAB data files
+│   ├── results.mat                  # Reaching and RSVP data
+│   ├── results_model_published.mat  # Same as above with model fits added.
+│   └── sim_degeneracy.mat           # Simulation results for model degeneracy test
 │
 ├── statistics/
 │   ├── data/                      # Exported .xlsx files for R analysis
 │   │   ├── data_reaching.xlsx
 │   │   ├── data_rsvp.xlsx
 │   │   └── data_modeling.xlsx
-│   ├── models/                    # Stan model file
+│   ├── models/                    # Stan model files
 │   │   └── model_statespaceparam.stan
-│   ├── results/                   # Pre-computed posterior draws (.xlsx)
+│   ├── results/                   # Reported posterior draws (.xlsx)
 │   ├── utils/                     # R helper functions
 │   └── *.R                        # Statistical analysis scripts
 │
 ├── utils/                         # MATLAB helper functions
-├── figures/                       # Output figures
+├── figures/                       # Figures
 ├── appendices/                    # Supplemental appendices
 │
 ├── export_reaching.m              # Export reaching data to .xlsx
 ├── export_rsvp.m                  # Export RSVP data to .xlsx
 ├── export_modeling.m              # Export model summary data to .xlsx
-├── modeling.m                     # Fit single-state model to hand angle data
+├── modeling.m                     # Fit single-rate state space model to hand angle data
 ├── figure2.m – figure6_1.m        # Figure generation scripts
 └── model_degeneracy_test.m        # Model degeneracy simulation and analysis
 ```
@@ -73,35 +73,36 @@ modeling.m           % → data/results_model_published.mat
 
 ### 3. Statistical analyses (R, run from statistics/)
 ```r
-rsvp_binomial_st.R       # RSVP accuracy — ST group (Figure 3)
-rsvp_binomial_dt.R       # RSVP accuracy — DT/DTF groups (Figure 3)
+ha_window_analysis.R     # Hand angle window analysis (Figures 2, 5, 5-3)
+rsvp_binomial_st.R       # RSVP accuracy — ST group (Figure 3-1)
+rsvp_binomial_dt.R       # RSVP accuracy — DT/DTF groups (Figures 3, 4, and 4-1)
 kinematics_rt.R          # Reaction time analysis (Figure 5-1)
 kinematics_mt.R          # Movement time analysis (Figure 5-1)
 kinematics_tad.R         # Total action duration analysis (Figure 5-1)
-ha_window_analysis.R     # Hand angle window analysis (Figures 4, 5)
 figure5_2.R              # Bootstrap learning curve analysis (Figure 5-2)
-correlations_exp1.R      # Exp 1 correlations (Figure 4-1)
-correlations_exp2.R      # Exp 2 correlations (Figure 4-1)
-correlations_combined.R  # Combined correlations
-correlations_model.R     # Model parameter correlations
-model_parameters.R       # Bayesian model of learning parameters (Figures 6, 7)
+correlations_exp1.R      # Exp 1 correlations (reported in text)
+correlations_exp2.R      # Exp 2 correlations (reported in text)
+correlations_combined.R  # Combined correlations (reported in text)
+correlations_model.R     # Model parameter correlations (indicated but not reported)
+model_parameters.R       # Bayesian model of learning parameters (Figures 6, 7, 7-1)
 ```
 
 ### 4. Generate figures (MATLAB)
 ```matlab
-figure2.m        % Experimental design
-figure3.m        % RSVP accuracy
-figure3_1.m      % RSVP supplemental
-figure4.m        % Hand angle learning curves
-figure4_1.m      % Correlation supplemental
-figure5.m        % Group comparisons
-figure6.m        % Model parameter posteriors
-figure6_1.m      % Model simulation supplemental
+figure2.m        % Exp 1: Hang angle (ST, DT)
+figure3.m        % Exp 1: RSVP accuracy (DT)
+figure3_1.m      % RSVP supplemental (ST)
+figure4.m        % Exp 2: RSVP accuracy (DTF)
+figure4_1.m      % Exp 1+2: RSVP accuracy (DT, DTF)
+figure5.m        % Exp 2: Hand angle (ST, DTF)
+figure6.m        % Model parameters and posterior predictive trajectories
+figure6_1.m      % Model simulation
 ```
+**Note:** figure1 was created in Adobe Illustrator. figure 5-2 was created in `figure5-2.R`. figure5-3 was created by re-running `ha_window_analysis.R` on alternative window ranges. figure7-1 was created in `model_degeneracy_test.m`.
 
 ### 5. Model degeneracy test (MATLAB)
 ```matlab
-model_degeneracy_test.m  % Loads sim_degeneracy.mat or re-runs simulation
+model_degeneracy_test.m  % Loads sim_degeneracy.mat or re-runs simulation (these data were used to produce figure7-1)
 ```
 > **Note:** `sim_degeneracy.mat` contains simulation results carried over from the original analysis. Due to stochastic sampling, numerical values may differ slightly from those reported in the paper (which reflect a separate realization), but the inferential conclusions are identical. Re-running requires `statistics/results/posterior_model_logitparameters.xlsx`, which is generated by `model_parameters.R`.
 
@@ -112,34 +113,34 @@ model_degeneracy_test.m  % Loads sim_degeneracy.mat or re-runs simulation
 ### `statistics/data/data_reaching.xlsx`
 One row per participant per cycle.
 
-| Column | Description |
-|--------|-------------|
-| `id` | Participant ID |
+| Column  | Description                            |
+|---------|----------------------------------------|
+| `id`    | Participant ID                         |
 | `group` | Experimental group (`ST`, `DT`, `DTF`) |
-| `cycle` | Trial cycle number |
-| `ha` | Hand angle (degrees) |
-| `rt` | Reaction time (ms) |
-| `mt` | Movement time (ms) |
-| `tad` | Total action duration (ms) |
+| `cycle` | Trial cycle number                     |
+| `ha`    | Hand angle (degrees)                   |
+| `rt`    | Reaction time (ms)                     |
+| `mt`    | Movement time (ms)                     |
+| `tad`   | Total action duration (ms)             |
 
 ### `statistics/data/data_rsvp.xlsx`
 One row per participant per phase.
 
-| Column | Description |
-|--------|-------------|
-| `id` | Participant ID |
-| `group` | Experimental group |
-| `phase` | Task phase (`baseline`, `onset`, `early`, `late`) |
-| `accuracy` | Proportion correct on RSVP task |
+| Column     | Description                                       |
+|------------|---------------------------------------------------|
+| `id`       | Participant ID                                    |
+| `group`    | Experimental group                                |
+| `phase`    | Task phase (`baseline`, `onset`, `early`, `late`) |
+| `accuracy` | Proportion correct on RSVP task                   |
 
 ### `statistics/data/data_modeling.xlsx`
 One row per participant.
 
-| Column | Description |
-|--------|-------------|
-| `id` | Participant ID |
-| `group` | Experimental group |
-| `ha_late_obs` | Observed mean hand angle in late learning window |
+| Column         | Description                                             |
+|----------------|---------------------------------------------------------|
+| `id`           | Participant ID                                          |
+| `group`        | Experimental group                                      |
+| `ha_late_obs`  | Observed mean hand angle in late learning window        |
 | `ha_late_pred` | Model-predicted mean hand angle in late learning window |
-| `a` | Fitted retention parameter (*A*) |
-| `b` | Fitted error sensitivity parameter (*b*) |
+| `a`            | Fitted retention parameter (*A*)                        |
+| `b`            | Fitted error sensitivity parameter (*b*)                |
